@@ -10,7 +10,6 @@ public class PaletteView extends JPanel {
     private Palette currentPalette;
     private ArrayList<JButton> paletteButton;
 
-
     public PaletteView(Palette currentPalette){
         this.currentPalette = currentPalette;
         paletteButton = new ArrayList();
@@ -30,18 +29,26 @@ public class PaletteView extends JPanel {
             this.add(paletteButton.get(i),constraint);
         }
     }
+
+    public Palette getPalette(){
+        return currentPalette;
+    }
+    public ArrayList<JButton> getPaletteButton() {
+        return paletteButton;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
+        g.setColor(Color.BLACK);
+        g.drawRect(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
     }
 
     @Override
     public Dimension getPreferredSize() {
         for (int i = 0; i < paletteButton.size(); i++){
-            paletteButton.get(i).setSize(new Dimension((paletteButton.get(i).getParent().getSize().width/14), (paletteButton.get(i).getParent().getSize().width/14)));
-
+            paletteButton.get(i).setPreferredSize(new Dimension((paletteButton.get(i).getParent().getSize().width/14), (paletteButton.get(i).getParent().getSize().width/14)));
         }
+        this.placeButton();
         Dimension dimension = new Dimension((this.getParent().getParent().getSize().width)/3, (this.getParent().getParent().getSize().height));
         return dimension;
     }

@@ -4,9 +4,20 @@ import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class MainView extends JFrame {
+
+public class MainView extends JFrame implements ActionListener, MouseListener {
+    public Color usingColor;
+    private PaletteView paletteView ;
+    private SheetView sheetView;
     public MainView(PaletteView currentPalette, SheetView currentSheet){
+        this.paletteView = currentPalette;
+        this.sheetView = currentSheet;
+        this.usingColor = new Color(0,0,0);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         JPanel mainPanel = new JPanel();
         this.setContentPane(mainPanel);
@@ -18,6 +29,10 @@ public class MainView extends JFrame {
         constraint.gridy = 0;
         constraint.gridx = 1;
         mainPanel.add(currentPalette,constraint);
+        sheetView.addMouseListener(this);
+        for(int i = 0 ; i < currentPalette.getPalette().getPaletteSize();i++){
+            currentPalette.getPaletteButton().get(i).addActionListener(this);
+        }
         this.setVisible(true);
         this.pack();
     }
@@ -25,5 +40,45 @@ public class MainView extends JFrame {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height-75);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for(int i = 0 ; i < paletteView.getPaletteButton().size(); i++){
+            if(e.getSource() == paletteView.getPaletteButton().get(i)){
+                usingColor = paletteView.getPaletteButton().get(i).getBackground();
+                System.out.println(usingColor);
+            }
+        }
+
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        //inutile
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getSource() == sheetView){
+            sheetView.getSheet().setPixelColor((e.getY())/(sheetView.getSheet().getPixel(0,0).getPixelArea().width),(e.getX())/(sheetView.getSheet().getPixel(0,0).getPixelArea().width),usingColor);
+            sheetView.repaint();
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

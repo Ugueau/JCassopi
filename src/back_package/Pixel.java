@@ -6,12 +6,13 @@ public class Pixel {
     private Color color;
     private Rectangle pixelArea;
 
+    public static Color defaultColor = new Color(255,255,255,13);
     public Pixel() {
     }
 
     public Pixel(int size){
         this.pixelArea = new Rectangle(size,size);
-        color = new Color((int)(Math.random()*1000%256),(int)(Math.random()*1000%256),(int)(Math.random()*1000%256));
+        color = defaultColor/*new Color((int)(Math.random()*1000%256),(int)(Math.random()*1000%256),(int)(Math.random()*1000%256))*/;
     }
 
     public Color getColor() {
