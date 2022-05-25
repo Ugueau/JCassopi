@@ -32,8 +32,18 @@ public class Palette {
             System.out.println("Fichier introuvable");
         }
     }
-    public Palette(String accessPath) {
+
+    public int getPaletteSize() {
+        return paletteSize;
+    }
+
+    public Color getColorAt(int i) {
+        return palette.get(i);
+    }
+
+    public Palette(String fileName) {
         palette = new ArrayList();
+        String accessPath = ".\\file\\"+fileName+".txt";
         File file = new File(accessPath);
         try {
             Scanner scan = new Scanner(file);

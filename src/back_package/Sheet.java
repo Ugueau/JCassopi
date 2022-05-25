@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class Sheet {
-    private static int GRID_HEIGHT = 900;
-    private static int GRID_WIDTH = 1200;
+    public static int GRID_HEIGHT = 900;
+    public static int GRID_WIDTH = 1200;
     public static Color defaultColor = new Color(0,0,0,13);
     private Pixel grid[][];
 
@@ -17,17 +17,17 @@ public class Sheet {
         for(int i = 0; i < GRID_HEIGHT; i++ ){
             for(int j = 0 ; j < GRID_WIDTH; j++){
                 grid[i][j] = new Pixel(1);
-                grid[i][j].setPixelCoordinate(i*grid[i][j].getPixelArea().width,j*grid[i][j].getPixelArea().width);
+                grid[i][j].setPixelCoordinate(j*grid[i][j].getPixelArea().width,i*grid[i][j].getPixelArea().width);
             }
         }
     }
 
-    //ne doit normalement pas etre utilisé
-    public Sheet(int size){
-        grid = new Pixel[GRID_HEIGHT/size][GRID_WIDTH/size];
-        for(int i = 0; i < GRID_HEIGHT/size; i++ ){
-            for(int j = 0 ; j < GRID_WIDTH/size; j++){
-                grid[i][j] = new Pixel(/*sans taille pour l'instant mais à definir en fonction de GRID_H et GRID_W*/);
+    public Sheet(int pixelSize){
+        grid = new Pixel[GRID_HEIGHT][GRID_WIDTH];
+        for(int i = 0; i < GRID_HEIGHT; i++ ){
+            for(int j = 0 ; j < GRID_WIDTH; j++){
+                grid[i][j] = new Pixel(pixelSize);
+                grid[i][j].setPixelCoordinate(j*grid[i][j].getPixelArea().width,i*grid[i][j].getPixelArea().width);
             }
         }
     }
