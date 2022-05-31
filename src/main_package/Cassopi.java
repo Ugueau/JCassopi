@@ -11,7 +11,7 @@ public class Cassopi {
     public static void main(String[] args){
         System.out.println("Taille de l'écran :" + Toolkit.getDefaultToolkit().getScreenSize().width+" , "+Toolkit.getDefaultToolkit().getScreenSize().height);
         Palette testPalette = new Palette("test");
-        Sheet testSheet = new Sheet(25);
+        Sheet testSheet = new Sheet(15);
         PaletteView testPV = new PaletteView(testPalette);
         SheetView testSV = new SheetView(testSheet);
         MainView mv = new MainView(testPV,testSV);

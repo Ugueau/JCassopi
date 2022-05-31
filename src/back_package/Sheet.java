@@ -16,7 +16,7 @@ public class Sheet {
         grid = new Pixel[GRID_HEIGHT][GRID_WIDTH];
         for(int i = 0; i < GRID_HEIGHT; i++ ){
             for(int j = 0 ; j < GRID_WIDTH; j++){
-                grid[i][j] = new Pixel(1);
+                grid[i][j] = new Pixel(2);
                 grid[i][j].setPixelCoordinate(j*grid[i][j].getPixelArea().width,i*grid[i][j].getPixelArea().width);
             }
         }
@@ -27,6 +27,26 @@ public class Sheet {
         for(int i = 0; i < GRID_HEIGHT; i++ ){
             for(int j = 0 ; j < GRID_WIDTH; j++){
                 grid[i][j] = new Pixel(pixelSize);
+                grid[i][j].setPixelCoordinate(j*grid[i][j].getPixelArea().width,i*grid[i][j].getPixelArea().width);
+            }
+        }
+    }
+
+    public void growPixel(){
+        int actualSize = grid[0][0].getPixelArea().width;
+        for(int i = 0; i < GRID_HEIGHT; i++ ) {
+            for (int j = 0; j < GRID_WIDTH; j++) {
+                grid[i][j].setPixelSize(actualSize+1);
+                grid[i][j].setPixelCoordinate(j*grid[i][j].getPixelArea().width,i*grid[i][j].getPixelArea().width);
+            }
+        }
+    }
+
+    public void reducePixel(){
+        int actualSize = grid[0][0].getPixelArea().width;
+        for(int i = 0; i < GRID_HEIGHT; i++ ) {
+            for (int j = 0; j < GRID_WIDTH; j++) {
+                grid[i][j].setPixelSize(actualSize-1);
                 grid[i][j].setPixelCoordinate(j*grid[i][j].getPixelArea().width,i*grid[i][j].getPixelArea().width);
             }
         }
