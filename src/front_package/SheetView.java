@@ -8,22 +8,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.IOException;
+import java.net.*;
 
 public class SheetView extends JPanel implements MouseWheelListener, KeyListener {
     private Sheet currentSheet;
-    private Integer zoomOrigin[];
-    public final static int X_ORIGIN = 0;
-    public final static int Y_ORIGIN = 1;
 
     private Point origin;
 
     public SheetView(Sheet currentSheet){
         origin = new Point(0,0);
         this.addKeyListener(this);
+        this.addMouseWheelListener(this);
         this.currentSheet = currentSheet;
-        zoomOrigin = new Integer[2];
-        zoomOrigin[X_ORIGIN] = 0;
-        zoomOrigin[Y_ORIGIN] = 0;
     }
 
 
@@ -49,7 +46,7 @@ public class SheetView extends JPanel implements MouseWheelListener, KeyListener
 
     @Override
     public Dimension getPreferredSize() {
-        Dimension dimension = new Dimension((((this.getParent().getParent().getSize().width)/3)*2)-((((this.getParent().getParent().getSize().width)/3)*2)%this.getSheet().getPixel(0,0).getPixelArea().width),this.getParent().getParent().getSize().height);
+        Dimension dimension = new Dimension((((this.getParent().getParent().getSize().width)/3)*2),this.getParent().getParent().getSize().height);
         return dimension;
     }
 
@@ -59,31 +56,13 @@ public class SheetView extends JPanel implements MouseWheelListener, KeyListener
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        /*if(e.getWheelRotation() == -1){
-            int xNbOfPixelBefore = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            int yNbOfPixelBefore = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            this.currentSheet.growPixel();
-            int xNbOfPixelAfter = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            int yNbOfPixelAfter = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            this.zoomOrigin[X_ORIGIN] = ((xNbOfPixelBefore-xNbOfPixelAfter)/2) +  zoomOrigin[X_ORIGIN];
-            this.zoomOrigin[Y_ORIGIN] = zoomOrigin[Y_ORIGIN] + ((yNbOfPixelBefore-yNbOfPixelAfter)/2);
-            this.repaint();
+        if(e.getWheelRotation() == 1 && currentSheet.getPixel(0,0).getPixelArea().width > 2){
+            currentSheet.reducePixel();
         }
-
-        if(e.getWheelRotation() == 1 && this.currentSheet.getPixel(0,0).getPixelArea().width > 2){
-            int xNbOfPixelBefore = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            int yNbOfPixelBefore = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            this.currentSheet.reducePixel();
-            int xNbOfPixelAfter = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            int yNbOfPixelAfter = this.getPreferredSize().width/this.currentSheet.getPixel(0,0).getPixelArea().width;
-            this.zoomOrigin[X_ORIGIN] = zoomOrigin[X_ORIGIN] - ((xNbOfPixelAfter-xNbOfPixelBefore)/2);
-            this.zoomOrigin[Y_ORIGIN] = zoomOrigin[Y_ORIGIN] - ((yNbOfPixelAfter-yNbOfPixelBefore)/2);
-            this.repaint();
-        }*/
-    }
-
-    public Integer[] getZoomOrigin() {
-        return zoomOrigin;
+        if(e.getWheelRotation() == -1 && currentSheet.getPixel(0,0).getPixelArea().width < 80){
+            currentSheet.growPixel();
+        }
+        this.repaint();
     }
 
     public Point getOrigin(){
@@ -118,6 +97,15 @@ public class SheetView extends JPanel implements MouseWheelListener, KeyListener
                 origin.y++;
             }
         }
+        if(e.getKeyCode() == 72){
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/Ugueau/JCassopi"));
+            } catch (Exception ex) {
+                System.out.println("Connection failed");
+            }
+
+        }
+        System.out.println(e.getKeyCode()+"");
         this.repaint();
     }
 
