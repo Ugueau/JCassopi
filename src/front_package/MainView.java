@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class MainView extends JFrame implements ActionListener, MouseListener, KeyListener {
+public class MainView extends JFrame implements ActionListener, MouseListener {
     public Color usingColor;
     private PaletteView paletteView ;
     private SheetView sheetView;
@@ -18,6 +18,7 @@ public class MainView extends JFrame implements ActionListener, MouseListener, K
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         JPanel mainPanel = new JPanel();
         this.setContentPane(mainPanel);
+        this.setTitle("Cassopi");
 
         mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints constraint = new GridBagConstraints();
@@ -29,7 +30,6 @@ public class MainView extends JFrame implements ActionListener, MouseListener, K
         mainPanel.add(currentPalette,constraint);
 
         sheetView.addMouseListener(this);
-        sheetView.addKeyListener(this);
         for(int i = 0 ; i < currentPalette.getPalette().getPaletteSize();i++){
             currentPalette.getPaletteButton().get(i).addActionListener(this);
         }
@@ -63,7 +63,12 @@ public class MainView extends JFrame implements ActionListener, MouseListener, K
     @Override
     public void mousePressed(MouseEvent e) {
         if(e.getSource() == sheetView) {
-            sheetView.getSheet().setPixelColor((e.getY()) / (sheetView.getSheet().getPixel(0, 0).getPixelArea().width) + sheetView.getZoomOrigin()[SheetView.X_ORIGIN], (e.getX()) / (sheetView.getSheet().getPixel(0, 0).getPixelArea().width) + sheetView.getZoomOrigin()[SheetView.Y_ORIGIN], usingColor);
+            sheetView.setFocusable(true);
+            sheetView.requestFocus();
+            sheetView.getSheet().setPixelColor(
+                    (e.getY()/ (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)-(sheetView.getOrigin().y)),
+                    (e.getX()) / (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)-(sheetView.getOrigin().x),
+                    usingColor);
             sheetView.repaint();
         }
     }
@@ -83,18 +88,4 @@ public class MainView extends JFrame implements ActionListener, MouseListener, K
 
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }

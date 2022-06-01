@@ -9,13 +9,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-public class SheetView extends JPanel implements MouseWheelListener {
+public class SheetView extends JPanel implements MouseWheelListener, KeyListener {
     private Sheet currentSheet;
     private Integer zoomOrigin[];
     public final static int X_ORIGIN = 0;
     public final static int Y_ORIGIN = 1;
 
+    private Point origin;
+
     public SheetView(Sheet currentSheet){
+        origin = new Point(0,0);
+        this.addKeyListener(this);
         this.currentSheet = currentSheet;
         zoomOrigin = new Integer[2];
         zoomOrigin[X_ORIGIN] = 0;
@@ -28,15 +32,15 @@ public class SheetView extends JPanel implements MouseWheelListener {
     protected void paintComponent(Graphics g) {
         g.setColor(Color.WHITE);
         g.fillRect(0,0,this.getSize().width,this.getSize().height);
-        for (int i = 0; i < (this.getSize().height/currentSheet.getPixel(0,0).getPixelArea().width); i++) {
-            for (int j = 0; j < ((this.getSize().width)/currentSheet.getPixel(0,0).getPixelArea().width); j++) {
+        for (int i = origin.y; i < (this.getSize().height/currentSheet.getPixel(0,0).getPixelArea().width); i++) {
+            for (int j = origin.x; j < ((this.getSize().width)/currentSheet.getPixel(0,0).getPixelArea().width); j++) {
                 if(/*this.currentSheet.getPixel(0,0).getPixelArea().width > 6*/true) {
                     g.setColor(Color.BLACK);
                     g.drawRect(j*currentSheet.getPixel(i, j).getPixelArea().width,i*currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().height);
                 }
                 /*g.setColor(currentSheet.getPixel(i+zoomOrigin[X_ORIGIN],j+zoomOrigin[Y_ORIGIN]).getColor());*/
                 g.setColor(currentSheet.getPixel(i,j).getColor());
-                g.fillRect(j*currentSheet.getPixel(i, j).getPixelArea().width, i*currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().height);
+                g.fillRect((j+ origin.x)*currentSheet.getPixel(i, j).getPixelArea().width, (i+ origin.y)*currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().height);
             }
         }
         this.setSize(this.getPreferredSize());
@@ -81,4 +85,43 @@ public class SheetView extends JPanel implements MouseWheelListener {
         return zoomOrigin;
     }
 
+    public Point getOrigin(){
+        return origin;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == 37){// left arrow
+            if(origin.x > 0){
+                origin.x--;
+            }
+        }
+        if(e.getKeyCode() == 38){// up arrow
+            if(origin.y > 0){
+                origin.y--;
+            }
+
+        }
+        if(e.getKeyCode() == 39){// right arrow
+            if(origin.x < Sheet.GRID_WIDTH-(this.getSize().width/currentSheet.getPixel(0,0).getPixelArea().width)) {
+                origin.x++;
+            }
+        }
+        if(e.getKeyCode() == 40){// down arrow
+            if(origin.y < Sheet.GRID_HEIGHT-(this.getSize().width/currentSheet.getPixel(0,0).getPixelArea().width)) {
+                origin.y++;
+            }
+        }
+        this.repaint();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
