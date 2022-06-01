@@ -66,8 +66,8 @@ public class MainView extends JFrame implements ActionListener, MouseListener {
             sheetView.setFocusable(true);
             sheetView.requestFocus();
             sheetView.getSheet().setPixelColor(
-                    (e.getY()/ (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)-(sheetView.getOrigin().y)),
-                    (e.getX()) / (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)-(sheetView.getOrigin().x),
+                    (e.getY()/ (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)+(sheetView.getOrigin().y)),
+                    (e.getX()) / (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)+(sheetView.getOrigin().x),
                     usingColor);
             sheetView.repaint();
         }

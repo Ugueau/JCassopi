@@ -30,17 +30,18 @@ public class SheetView extends JPanel implements MouseWheelListener, KeyListener
 
     @Override
     protected void paintComponent(Graphics g) {
+        Color gridBarColor = new Color(150,150,150);
         g.setColor(Color.WHITE);
         g.fillRect(0,0,this.getSize().width,this.getSize().height);
-        for (int i = origin.y; i < (this.getSize().height/currentSheet.getPixel(0,0).getPixelArea().width); i++) {
-            for (int j = origin.x; j < ((this.getSize().width)/currentSheet.getPixel(0,0).getPixelArea().width); j++) {
-                if(/*this.currentSheet.getPixel(0,0).getPixelArea().width > 6*/true) {
-                    g.setColor(Color.BLACK);
+        for (int i = 0; i < (this.getSize().height/currentSheet.getPixel(0,0).getPixelArea().width); i++) {
+            for (int j = 0; j < ((this.getSize().width)/currentSheet.getPixel(0,0).getPixelArea().width); j++) {
+                if(this.currentSheet.getPixel(0,0).getPixelArea().width > 6) {
+                    g.setColor(gridBarColor);
                     g.drawRect(j*currentSheet.getPixel(i, j).getPixelArea().width,i*currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().height);
                 }
-                /*g.setColor(currentSheet.getPixel(i+zoomOrigin[X_ORIGIN],j+zoomOrigin[Y_ORIGIN]).getColor());*/
-                g.setColor(currentSheet.getPixel(i,j).getColor());
-                g.fillRect((j+ origin.x)*currentSheet.getPixel(i, j).getPixelArea().width, (i+ origin.y)*currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().height);
+                g.setColor(currentSheet.getPixel(i+ origin.y,j+ origin.x).getColor());
+                /*ne jamais toucher à la ligne suivante MERCI HUGO*/
+                g.fillRect(j*currentSheet.getPixel(i, j).getPixelArea().width, i*currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().width, currentSheet.getPixel(i, j).getPixelArea().height);
             }
         }
         this.setSize(this.getPreferredSize());
