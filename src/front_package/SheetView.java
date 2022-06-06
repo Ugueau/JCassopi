@@ -27,6 +27,7 @@ public class SheetView extends JPanel implements MouseWheelListener, KeyListener
 
     @Override
     protected void paintComponent(Graphics g) {
+        System.out.println("ici");
         Color gridBarColor = new Color(150,150,150);
         g.setColor(Color.WHITE);
         g.fillRect(0,0,this.getSize().width,this.getSize().height);
@@ -97,15 +98,17 @@ public class SheetView extends JPanel implements MouseWheelListener, KeyListener
                 origin.y++;
             }
         }
-        if(e.getKeyCode() == 72){
+        if(e.getKeyCode() == 72){ // H key
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/Ugueau/JCassopi"));
             } catch (Exception ex) {
                 System.out.println("Connection failed");
             }
-
         }
-        System.out.println(e.getKeyCode()+"");
+        if(e.getKeyCode() == 82) { // R key
+            currentSheet.resetSheet();
+            this.repaint();
+        }
         this.repaint();
     }
 

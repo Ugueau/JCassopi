@@ -77,11 +77,12 @@ public class Sheet {
                 svgSave.write(("<svg width=\""+GRID_WIDTH+"\" height=\""+GRID_HEIGHT+"\">").getBytes(StandardCharsets.UTF_8));
                 for (int i =0; i < GRID_HEIGHT; i++){
                     for(int j = 0 ; j < GRID_WIDTH; j++){
-                        if(grid[i][j].getColor() != Pixel.defaultColor) {
+                        if(grid[i][j].getColor() != Pixel.defaultColor || grid[i][j].getColor().getAlpha() != 0) {
                             svgSave.write(("<rect x=\"" + grid[i][j].getPixelArea().x + "\" y=\"" + grid[i][j].getPixelArea().y + "\" width=\"" + grid[i][j].getPixelArea().width + "\" height=\"" + grid[i][j].getPixelArea().height + "\" style=\" fill:rgb(" + grid[i][j].getColor().getRed() + "," + grid[i][j].getColor().getGreen() + "," + grid[i][j].getColor().getBlue() + ") \"></rect>\n").getBytes(StandardCharsets.UTF_8)); //<rect x="406" y="834" width="1" height="1" style=" fill:rgb(255,127,0) "></rect>
                         }
                     }
                 }
+                svgSave.close();
             }catch(IOException ioe){
                 System.out.println("Save failed");
             }

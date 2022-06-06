@@ -7,15 +7,19 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class MainView extends JFrame implements ActionListener, MouseListener {
+public class MainView extends JFrame implements ActionListener, MouseListener, KeyListener, MouseMotionListener {
     public Color usingColor;
     private PaletteView paletteView ;
     private SheetView sheetView;
     public MainView(PaletteView currentPalette, SheetView currentSheet){
         this.paletteView = currentPalette;
         this.sheetView = currentSheet;
+        this.sheetView.addKeyListener(this);
+        this.sheetView.addMouseMotionListener(this);
         this.usingColor = new Color(0,0,0);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        //this.setIconImage();
         JPanel mainPanel = new JPanel();
         this.setContentPane(mainPanel);
         this.setTitle("Cassopi");
@@ -88,4 +92,43 @@ public class MainView extends JFrame implements ActionListener, MouseListener {
 
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == 83){ // S key
+            SaveDialog save = new SaveDialog(this);
+            String saveFileInfo[] = save.showDialog();
+            switch(Integer.parseInt(saveFileInfo[1])){
+                case 0:
+                    sheetView.getSheet().saveToSVG(saveFileInfo[0]);
+                    break;
+                case 1:
+                    //bitmap
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        sheetView.getSheet().setPixelColor(
+                (e.getY()/ (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)+(sheetView.getOrigin().y)),
+                (e.getX()) / (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)+(sheetView.getOrigin().x),
+                usingColor);
+        sheetView.repaint(this.sheetView.getSheet().getPixel((e.getY()/ (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)+(sheetView.getOrigin().y)),(e.getX()) / (sheetView.getSheet().getPixel(0, 0).getPixelArea().width)+(sheetView.getOrigin().x)).getPixelArea());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
 }

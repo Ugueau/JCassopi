@@ -6,7 +6,7 @@ public class Pixel {
     private Color color;
     private Rectangle pixelArea;
 
-    public static Color defaultColor = new Color(255,255,255,13);
+    public static Color defaultColor = new Color(255,255,255,0);
     public Pixel() {
     }
 
